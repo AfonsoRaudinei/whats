@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Assistente Comercial</title>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#1428A0">
+  <style>
+    :root{
+      --azul:#1428A0; --verde:#006437; --prata:#C0C4CC;
+      --gelo:#F5F7FA; --branco:#FFFFFF; --texto:#303133;
+    }
+    *{box-sizing:border-box;margin:0;padding:0;font-family:-apple-system,Segoe UI,Roboto,sans-serif}
+    body{background:var(--gelo);color:var(--texto)}
+    /* HEADER */
+    header{background:var(--azul);color:#fff;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:10}
+    header h1{font-size:18px;font-weight:600}
+    header button{background:rgba(255,255,255,.2);border:none;color:#fff;padding:6px 12px;border-radius:8px;font-size:13px}
+    /* MENU */
+    nav{display:flex;background:var(--branco);border-bottom:1px solid var(--prata);overflow-x:auto}
+    nav button{flex:1;min-width:80px;border:none;background:none;padding:12px 8px;font-size:13px;color:var(--texto);border-bottom:3px solid transparent}
+    nav button.ativo{color:var(--azul);border-bottom-color:var(--azul);font-weight:600}
+    /* CONTEUDO */
+    main{padding:16px;max-width:900px;margin:0 auto}
+    .card{background:var(--branco);border-radius:14px;box-shadow:0 2px 8px rgba(0,0,0,.06);padding:16px;margin-bottom:12px}
+    .cliente-card{display:flex;justify-content:space-between;align-items:flex-start}
+    .cliente-card h3{font-size:16px;margin-bottom:4px}
+    .cliente-card p{font-size:13px;color:#606266;margin:2px 0}
+    .badge{font-size:11px;padding:3px 8px;border-radius:20px;font-weight:600}
+    .badge.ativo{background:#e6f4ea;color:var(--verde)}
+    .badge.nao_contatar{background:#fde2e2;color:#c0392b}
+    .badge.pendente{background:#fdf6e3;color:#b7791f}
+    /* BOTOES */
+    .btn{border:none;border-radius:10px;padding:12px 16px;font-size:14px;font-weight:600;cursor:pointer}
+    .btn-azul{background:var(--azul);color:#fff}
+    .btn-verde{background:var(--verde);color:#fff}
+    .btn-prata{background:var(--prata);color:var(--texto)}
+    .btn-full{width:100%;margin-top:8px}
+    .fab{position:fixed;bottom:20px;right:20px;width:56px;height:56px;border-radius:50%;background:var(--verde);color:#fff;font-size:28px;border:none;box-shadow:0 4px 12px rgba(0,0,0,.2)}
+    .acoes{display:flex;gap:8px;margin-top:10px}
+    .acoes button{flex:1;font-size:12px;padding:8px}
+    /* INPUTS */
+    input,select,textarea{width:100%;padding:11px;border:1px solid var(--prata);border-radius:10px;font-size:14px;margin-bottom:10px;background:#fff}
+    label{font-size:12px;color:#606266;font-weight:600;display:block;margin-bottom:2px}
+    /* LOGIN */
+    #tela-login{display:flex;flex-direction:column;justify-content:center;min-height:100vh;padding:24px;max-width:400px;margin:0 auto}
+    #tela-login h1{color:var(--azul);text-align:center;margin-bottom:6px}
+    #tela-login p{text-align:center;color:#909399;margin-bottom:24px;font-size:14px}
+    /* MODAL */
+    .modal{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;align-items:flex-end;z-index:20}
+    .modal.aberto{display:flex}
+    .modal-conteudo{background:#fff;width:100%;max-width:900px;margin:0 auto;border-radius:20px 20px 0 0;padding:20px;max-height:90vh;overflow-y:auto}
+    .modal-conteudo h2{margin-bottom:16px;color:var(--azul)}
+    .busca{margin-bottom:12px}
+    .vazio{text-align:center;color:#909399;padding:40px 20px}
+    .app-oculto{display:none}
+  </style>
+</head>
+<body>
+
+<!-- ===== LOGIN ===== -->
+<div id="tela-login">
+  <h1>🌱 Assistente Comercial</h1>
+  <p>Gestão de ofertas via WhatsApp</p>
+  <div class="card">
+    <label>E-mail</label>
+    <input type="email" id="login-email" placeholder="seu@email.com">
+    <label>Senha</label>
+    <input type="password" id="login-senha" placeholder="••••••••">
+    <button class="btn btn-azul btn-full" onclick="entrar()">Entrar</button>
+    <button class="btn btn-prata btn-full" onclick="cadastrar()">Criar conta</button>
+    <p id="login-msg" style="color:#c0392b;margin-top:10px"></p>
+  </div>
+</div>
+
+<!-- ===== APP ===== -->
+<div id="app" class="app-oculto">
+  <header>
+    <h1>🌱 Assistente Comercial</h1>
+    <button onclick="sair()">Sair</button>
+  </header>
+  <nav>
+    <button class="ativo" onclick="irPara('clientes',this)">Clientes</button>
+    <button onclick="alert('Em breve')">Ofertas</button>
+    <button onclick="alert('Em breve')">Envios</button>
+    <button onclick="alert('Em breve')">Histórico</button>
+  </nav>
+  <main>
+    <!-- CLIENTES -->
+    <div id="pg-clientes">
+      <input class="busca" id="busca" placeholder="🔍 Buscar por nome, município ou cultura..." oninput="renderClientes()">
+      <div id="lista-clientes"></div>
+    </div>
+  </main>
+  <button class="fab" onclick="abrirModal()">+</button>
+</div>
+
+<!-- ===== MODAL CADASTRO/EDIÇÃO ===== -->
+<div class="modal" id="modal-cliente">
+  <div class="modal-conteudo">
+    <h2 id="modal-titulo">Novo Cliente</h2>
+    <input type="hidden" id="c-id">
+    <label>Nome *</label><input id="c-nome" placeholder="Nome do cliente">
+    <label>Telefone (com 55) *</label><input id="c-telefone" placeholder="5563999999999">
+    <label>Fazenda</label><input id="c-fazenda">
+    <label>Município</label><input id="c-municipio">
+    <label>Cultura</label>
+    <select id="c-cultura">
+      <option value="">Selecione</option>
+      <option>Soja</option><option>Milho</option><option>Algodão</option><option>Sorgo</option><option>Outra</option>
+    </select>
+    <label>Área plantada (ha)</label><input id="c-area" type="number">
+    <label>Produtos de interesse</label><input id="c-produtos">
+    <label>Status</label>
+    <select id="c-status">
+      <option value="ativo">Ativo</option>
+      <option value="pendente">Pendente</option>
+      <option value="nao_contatar">Não contatar</option>
+    </select>
+    <label>Observações</label><textarea id="c-obs" rows="2"></textarea>
+    <button class="btn btn-verde btn-full" onclick="salvarCliente()">Salvar</button>
+    <button class="btn btn-prata btn-full" onclick="fecharModal()">Cancelar</button>
+  </div>
+</div>
+
+<script type="module">
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
+
+const SUPABASE_URL = 'https://diklxzebdhwwynjofhrm.supabase.co'
+const SUPABASE_KEY = 'sb_publishable_eKYzXrRFIstQ9vwQc9VK5w_1Ta_7C71'
+const sb = createClient(SUPABASE_URL, SUPABASE_KEY)
+
+let clientes = []
+
+// ---- AUTENTICAÇÃO ----
+window.entrar = async () => {
+  const email = document.getElementById('login-email').value
+  const password = document.getElementById('login-senha').value
+  const { error } = await sb.auth.signInWithPassword({ email, password })
+  if (error) return document.getElementById('login-msg').textContent = 'Erro: ' + error.message
+  iniciarApp()
+}
+window.cadastrar = async () => {
+  const email = document.getElementById('login-email').value
+  const password = document.getElementById('login-senha').value
+  const { error } = await sb.auth.signUp({ email, password, options:{ data:{ nome: email.split('@')[0] } } })
+  if (error) return document.getElementById('login-msg').textContent = 'Erro: ' + error.message
+  document.getElementById('login-msg').style.color = 'green'
+  document.getElementById('login-msg').textContent = 'Conta criada! Agora clique em Entrar.'
+}
+window.sair = async () => { await sb.auth.signOut(); location.reload() }
+
+async function iniciarApp(){
+  document.getElementById('tela-login').style.display = 'none'
+  document.getElementById('app').classList.remove('app-oculto')
+  await carregarClientes()
+}
+
+// ---- CRUD CLIENTES ----
+async function carregarClientes(){
+  const { data, error } = await sb.from('clientes').select('*').order('nome')
+  if (error) return alert('Erro ao carregar: ' + error.message)
+  clientes = data || []
+  renderClientes()
+}
+
+window.renderClientes = () => {
+  const termo = document.getElementById('busca').value.toLowerCase()
+  const filtrados = clientes.filter(c =>
+    (c.nome||'').toLowerCase().includes(termo) ||
+    (c.municipio||'').toLowerCase().includes(termo) ||
+    (c.cultura||'').toLowerCase().includes(termo))
+  const lista = document.getElementById('lista-clientes')
+  if (!filtrados.length){ lista.innerHTML = '<div class="vazio">Nenhum cliente. Toque no + para adicionar.</div>'; return }
+  lista.innerHTML = filtrados.map(c => `
+    <div class="card">
+      <div class="cliente-card">
+        <div>
+          <h3>${c.nome}</h3>
+          <p>📍 ${c.municipio||'—'} • 🌾 ${c.cultura||'—'}</p>
+          <p>📱 ${c.telefone||'—'}</p>
+        </div>
+        <span class="badge ${c.status_contato}">${labelStatus(c.status_contato)}</span>
+      </div>
+      <div class="acoes">
+        <button class="btn btn-verde" onclick="whatsapp('${c.telefone}','${c.nome}')">WhatsApp</button>
+        <button class="btn btn-azul" onclick="editarCliente('${c.id}')">Editar</button>
+        <button class="btn btn-prata" onclick="excluirCliente('${c.id}')">Excluir</button>
+      </div>
+    </div>`).join('')
+}
+
+function labelStatus(s){ return {ativo:'Ativo',nao_contatar:'Não contatar',pendente:'Pendente'}[s]||s }
+
+window.abrirModal = () => {
+  document.getElementById('modal-titulo').textContent = 'Novo Cliente'
+  ;['c-id','c-nome','c-telefone','c-fazenda','c-municipio','c-area','c-produtos','c-obs'].forEach(id=>document.getElementById(id).value='')
+  document.getElementById('c-cultura').value=''
+  document.getElementById('c-status').value='ativo'
+  document.getElementById('modal-cliente').classList.add('aberto')
+}
+window.fecharModal = () => document.getElementById('modal-cliente').classList.remove('aberto')
+
+window.editarCliente = (id) => {
+  const c = clientes.find(x=>x.id===id); if(!c) return
+  document.getElementById('modal-titulo').textContent = 'Editar Cliente'
+  document.getElementById('c-id').value = c.id
+  document.getElementById('c-nome').value = c.nome||''
+  document.getElementById('c-telefone').value = c.telefone||''
+  document.getElementById('c-fazenda').value = c.fazenda||''
+  document.getElementById('c-municipio').value = c.municipio||''
+  document.getElementById('c-cultura').value = c.cultura||''
+  document.getElementById('c-area').value = c.area_plantada||''
+  document.getElementById('c-produtos').value = c.produtos_interesse||''
+  document.getElementById('c-status').value = c.status_contato||'ativo'
+  document.getElementById('c-obs').value = c.observacoes||''
+  document.getElementById('modal-cliente').classList.add('aberto')
+}
+
+window.salvarCliente = async () => {
+  const id = document.getElementById('c-id').value
+  const dados = {
+    nome: document.getElementById('c-nome').value,
+    telefone: document.getElementById('c-telefone').value,
+    fazenda: document.getElementById('c-fazenda').value,
+    municipio: document.getElementById('c-municipio').value,
+    cultura: document.getElementById('c-cultura').value,
+    area_plantada: document.getElementById('c-area').value || null,
+    produtos_interesse: document.getElementById('c-produtos').value,
+    status_contato: document.getElementById('c-status').value,
+    observacoes: document.getElementById('c-obs').value
+  }
+  if(!dados.nome) return alert('Nome é obrigatório')
+  let error
+  if(id){ ({ error } = await sb.from('clientes').update(dados).eq('id',id)) }
+  else  { ({ error } = await sb.from('clientes').insert(dados)) }
+  if(error) return alert('Erro ao salvar: ' + error.message)
+  fecharModal(); carregarClientes()
+}
+
+window.excluirCliente = async (id) => {
+  if(!confirm('Excluir este cliente?')) return
+  const { error } = await sb.from('clientes').delete().eq('id',id)
+  if(error) return alert('Erro: ' + error.message)
+  carregarClientes()
+}
+
+// ---- WHATSAPP (reduz cliques!) ----
+window.whatsapp = (tel,nome) => {
+  if(!tel) return alert('Cliente sem telefone')
+  const msg = encodeURIComponent(`Bom dia, ${nome}. `)
+  window.open(`https://wa.me/${tel}?text=${msg}`,'_blank')
+}
+
+window.irPara = (pg,btn) => {
+  document.querySelectorAll('nav button').forEach(b=>b.classList.remove('ativo'))
+  btn.classList.add('ativo')
+}
+
+// ---- SESSÃO AUTOMÁTICA ----
+const { data:{ session } } = await sb.auth.getSession()
+if(session) iniciarApp()
+</script>
+</body>
+</html>
