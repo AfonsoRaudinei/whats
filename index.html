@@ -91,6 +91,7 @@
     .btn-danger{background:var(--danger);color:#fff}
     .btn-ghost{background:rgba(255,255,255,.15);color:#fff}
     .btn-full{width:100%}
+    .btn[disabled]{opacity:.6;cursor:not-allowed;transform:none}
     nav{
       display:flex;
       gap:8px;
@@ -309,7 +310,20 @@
       margin-top:10px;
       font-size:13px;
       font-weight:600;
+      min-height:18px;
     }
+    .config-warning{
+      margin-top:14px;
+      padding:10px 12px;
+      background:#fde8e6;
+      color:var(--danger);
+      border-radius:12px;
+      font-size:12px;
+      font-weight:600;
+      line-height:1.5;
+      display:none;
+    }
+    .config-warning.show{display:block}
     .progress{
       background:#edf2f7;
       border-radius:999px;
@@ -378,9 +392,15 @@
 
       <button class="btn btn-azul btn-full" id="btnEntrar">Entrar</button>
       <div class="login-msg" id="loginMsg"></div>
+      <div class="config-warning" id="configWarning">
+        ⚠️ A SUPABASE_KEY no código ainda é um placeholder. Abra o arquivo, troque
+        <code>COLOQUE_AQUI_SUA_ANON_KEY</code> pela sua <strong>anon public key</strong>
+        (Supabase → Settings → API → Project API keys) e salve de novo.
+      </div>
 
       <div style="margin-top:16px" class="small muted">
-        Dica: crie o usuário manualmente no Supabase em Authentication → Users.
+        Dica: crie o usuário manualmente no Supabase em Authentication → Users, e confirme
+        que o status dele aparece como "Confirmed".
       </div>
     </div>
   </div>
@@ -809,9 +829,22 @@
   <script type="module">
     import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
 
+    // ============================================================
+    // ⚠️ CONFIGURAÇÃO OBRIGATÓRIA
+    // Vá em Supabase → Settings → API → "Project API keys" e copie
+    // a chave "anon public" (começa com "eyJhbGci..."). Cole abaixo,
+    // substituindo o placeholder. NÃO use uma chave "sb_publishable_...":
+    // esse formato não autentica o client-side corretamente.
+    // ============================================================
     const SUPABASE_URL = 'https://diklxzebdhwwynjofhrm.supabase.co'
-    const SUPABASE_KEY = 'sb_publishable_eKYzXrRFIstQ9vwQc9VK5w_1Ta_7C71'
+    const SUPABASE_KEY = 'COLOQUE_AQUI_SUA_ANON_KEY'
     const BUCKET = 'panfletos'
+
+    const isKeyConfigured = SUPABASE_KEY && SUPABASE_KEY.startsWith('eyJ')
+    if(!isKeyConfigured){
+      document.getElementById('configWarning').classList.add('show')
+      document.getElementById('btnEntrar').setAttribute('disabled', 'true')
+    }
 
     const supabase = createClient(SUPABASE_URL, SUPABASE_KEY)
 
@@ -845,6 +878,28 @@
     function showMsg(el, msg, ok=false){
       el.textContent = msg
       el.style.color = ok ? '#0f9d58' : '#c0392b'
+    }
+
+    // Traduz erros comuns do Supabase Auth para mensagens claras em pt-BR
+    function traduzErroLogin(error){
+      const msg = (error?.message || '').toLowerCase()
+
+      if(msg.includes('invalid api key') || msg.includes('invalid_api_key')){
+        return 'A chave do Supabase (SUPABASE_KEY) está incorreta ou é do tipo errado. Confira a "anon public key" em Settings → API.'
+      }
+      if(msg.includes('invalid login credentials')){
+        return 'E-mail ou senha incorretos, ou o usuário não existe. Confira em Authentication → Users.'
+      }
+      if(msg.includes('email not confirmed')){
+        return 'Este e-mail ainda não foi confirmado. Em Authentication → Users, abra o usuário e confirme o e-mail manualmente.'
+      }
+      if(msg.includes('user not found')){
+        return 'Nenhum usuário encontrado com este e-mail.'
+      }
+      if(msg.includes('failed to fetch') || msg.includes('networkerror')){
+        return 'Não foi possível conectar ao Supabase. Verifique sua internet ou se a SUPABASE_URL está correta.'
+      }
+      return 'Erro ao entrar: ' + (error?.message || 'erro desconhecido')
     }
 
     function fmtDate(v){
@@ -964,19 +1019,37 @@
 
     // ---------- AUTH ----------
     async function login(){
+      if(!isKeyConfigured){
+        showMsg($('loginMsg'), 'Configure a SUPABASE_KEY antes de tentar entrar (veja o aviso acima).')
+        return
+      }
+
       const email = $('loginEmail').value.trim()
       const password = $('loginSenha').value.trim()
       const msg = $('loginMsg')
+      const btn = $('btnEntrar')
 
       msg.textContent = ''
       if(!email || !password){
         return showMsg(msg, 'Informe e-mail e senha.')
       }
 
-      const { error } = await supabase.auth.signInWithPassword({ email, password })
-      if(error) return showMsg(msg, 'Erro ao entrar: ' + error.message)
+      btn.setAttribute('disabled', 'true')
+      btn.textContent = 'Entrando...'
 
-      await initApp()
+      try{
+        const { error } = await supabase.auth.signInWithPassword({ email, password })
+        if(error){
+          showMsg(msg, traduzErroLogin(error))
+          return
+        }
+        await initApp()
+      }catch(err){
+        showMsg(msg, traduzErroLogin(err))
+      }finally{
+        btn.removeAttribute('disabled')
+        btn.textContent = 'Entrar'
+      }
     }
 
     async function logout(){
@@ -986,6 +1059,7 @@
     }
 
     $('btnEntrar').addEventListener('click', login)
+    $('loginSenha').addEventListener('keydown', (e) => { if(e.key === 'Enter') login() })
     $('btnLogout').addEventListener('click', logout)
     $('btnRefresh').addEventListener('click', async () => {
       await loadAll()
@@ -1639,9 +1713,11 @@
     })
 
     // ---------- START ----------
-    const { data:{ session } } = await supabase.auth.getSession()
-    if(session){
-      await initApp()
+    if(isKeyConfigured){
+      const { data:{ session } } = await supabase.auth.getSession()
+      if(session){
+        await initApp()
+      }
     }
   </script>
 </body>
