@@ -2,373 +2,170 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>Assistente Comercial</title>
   <meta name="theme-color" content="#1428A0" />
   <style>
     :root{
-      --azul:#1428A0;
-      --verde:#006437;
-      --prata:#C0C4CC;
-      --gelo:#F5F7FA;
-      --branco:#FFFFFF;
-      --texto:#303133;
-      --muted:#6b7280;
-      --danger:#c0392b;
-      --warn:#b7791f;
-      --ok:#0f9d58;
-      --shadow:0 6px 18px rgba(0,0,0,.08);
-      --radius:16px;
+      --brand1:#1428A0;
+      --brand2:#3654d1;
+      --accent:#0A84FF;
+      --accent-strong:#0066E0;
+      --success:#34C759;
+      --success-strong:#1c8a3d;
+      --warn:#FF9500;
+      --warn-strong:#b56100;
+      --danger:#FF3B30;
+      --danger-strong:#c8261d;
+      --bg:#F2F2F7;
+      --card:#FFFFFF;
+      --border:rgba(60,60,67,.13);
+      --label:#1C1C1E;
+      --label2:#6E6E73;
+      --label3:#AEAEB2;
+      --shadow:0 1px 3px rgba(0,0,0,.05), 0 8px 20px rgba(0,0,0,.06);
+      --radius-lg:24px;
+      --radius-md:16px;
+      --radius-sm:12px;
     }
-    *{box-sizing:border-box}
+    *{box-sizing:border-box; -webkit-tap-highlight-color:transparent}
     body{
       margin:0;
-      font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
-      background:var(--gelo);
-      color:var(--texto);
+      font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,Arial,sans-serif;
+      background:var(--bg);
+      color:var(--label);
+      -webkit-font-smoothing:antialiased;
     }
     .hidden{display:none!important}
-    .app-shell{
-      min-height:100vh;
-      display:flex;
-      flex-direction:column;
-    }
+    .app-shell{min-height:100vh; display:flex; flex-direction:column}
+
     header{
-      position:sticky;
-      top:0;
-      z-index:20;
-      background:linear-gradient(135deg,var(--azul),#1e3bb8);
+      position:sticky; top:0; z-index:20;
+      background:linear-gradient(135deg,var(--brand1),var(--brand2));
       color:#fff;
-      padding:14px 16px;
+      padding-top:calc(14px + env(safe-area-inset-top));
       box-shadow:var(--shadow);
     }
-    .header-top{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-    }
-    .brand{
-      display:flex;
-      align-items:center;
-      gap:10px;
-    }
-    .logo{
-      width:38px;height:38px;border-radius:12px;
-      background:rgba(255,255,255,.15);
-      display:flex;align-items:center;justify-content:center;
-      font-size:20px;
-    }
-    .brand h1{
-      margin:0;
-      font-size:18px;
-      line-height:1.1;
-    }
-    .brand small{
-      opacity:.9;
-      font-size:12px;
-    }
-    .top-actions{
-      display:flex;
-      gap:8px;
-      flex-wrap:wrap;
-    }
-    .btn{
-      border:none;
-      border-radius:12px;
-      padding:11px 14px;
-      font-size:14px;
-      font-weight:600;
-      cursor:pointer;
-      transition:.2s;
-    }
-    .btn:hover{transform:translateY(-1px)}
-    .btn:active{transform:translateY(0)}
-    .btn-azul{background:var(--azul);color:#fff}
-    .btn-verde{background:var(--verde);color:#fff}
-    .btn-prata{background:var(--prata);color:#1f2937}
-    .btn-branco{background:#fff;color:var(--azul)}
-    .btn-danger{background:var(--danger);color:#fff}
-    .btn-ghost{background:rgba(255,255,255,.15);color:#fff}
-    .btn-full{width:100%}
-    .btn[disabled]{opacity:.6;cursor:not-allowed;transform:none}
-    nav{
-      display:flex;
-      gap:8px;
-      overflow:auto;
-      padding:12px 12px 0;
-      background:transparent;
-    }
-    nav button{
-      border:none;
-      background:#fff;
-      color:var(--texto);
-      padding:12px 14px;
-      border-radius:12px 12px 0 0;
-      min-width:max-content;
-      border-bottom:3px solid transparent;
-      box-shadow:0 2px 8px rgba(0,0,0,.04);
-      font-weight:600;
-    }
-    nav button.active{
-      color:var(--azul);
-      border-bottom-color:var(--azul);
-    }
-    main{
-      width:100%;
-      max-width:1200px;
-      margin:0 auto;
-      padding:16px;
-      padding-bottom:90px;
-    }
-    .grid{
-      display:grid;
-      gap:14px;
-    }
-    .grid-2{grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
-    .grid-3{grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
-    .card{
-      background:var(--branco);
-      border-radius:var(--radius);
-      box-shadow:var(--shadow);
-      padding:16px;
-    }
+    .header-inner{max-width:640px; margin:0 auto; padding:0 16px}
+    .header-top{display:flex; align-items:center; justify-content:space-between; gap:10px; padding-bottom:12px}
+    .brand{display:flex; align-items:center; gap:10px; min-width:0}
+    .logo{width:40px;height:40px;border-radius:13px; background:rgba(255,255,255,.16); display:flex;align-items:center;justify-content:center; font-size:20px; flex:0 0 auto}
+    .brand h1{margin:0; font-size:17px; line-height:1.15; font-weight:800}
+    .brand small{opacity:.85; font-size:11px}
+    .top-actions{display:flex; gap:8px; flex:0 0 auto}
+    .icon-btn{width:38px;height:38px;border-radius:50%;border:none;background:rgba(255,255,255,.16);color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:.15s}
+    .icon-btn:active{transform:scale(.9); background:rgba(255,255,255,.3)}
+    .icon-btn svg{width:18px;height:18px}
+
+    nav{display:flex; gap:6px; overflow-x:auto; padding:2px 0 14px; -webkit-overflow-scrolling:touch; scrollbar-width:none}
+    nav::-webkit-scrollbar{display:none}
+    .nav-btn{display:flex; align-items:center; gap:6px; border:none; background:rgba(255,255,255,.14); color:rgba(255,255,255,.88); padding:10px 14px; border-radius:999px; min-width:max-content; font-weight:700; font-size:13px; cursor:pointer; transition:.16s}
+    .nav-btn svg{width:15px;height:15px}
+    .nav-btn.active{background:#fff; color:var(--brand1); box-shadow:0 4px 10px rgba(0,0,0,.14)}
+    .nav-btn:active{transform:scale(.95)}
+
+    main{width:100%; max-width:640px; margin:0 auto; padding:16px; padding-bottom:calc(100px + env(safe-area-inset-bottom))}
+
+    .grid{display:grid; gap:12px}
+    .grid-2{grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+    .grid-3{grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
+    .card{background:var(--card); border-radius:var(--radius-lg); box-shadow:var(--shadow); border:1px solid var(--border); padding:18px}
     .card h2,.card h3,.card h4{margin:0 0 10px}
-    .muted{color:var(--muted)}
-    .kpi{
-      display:flex;
-      flex-direction:column;
-      gap:8px;
-    }
-    .kpi .value{
-      font-size:30px;
-      font-weight:800;
-      color:var(--azul);
-    }
-    .kpi .label{
-      color:var(--muted);
-      font-size:13px;
-      font-weight:600;
-    }
-    .toolbar{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      margin-bottom:12px;
-    }
+    .muted{color:var(--label2)}
+    .kpi{display:flex; flex-direction:column; gap:6px}
+    .kpi .value{font-size:32px; font-weight:800; color:var(--brand1)}
+    .kpi .label{color:var(--label2); font-size:12.5px; font-weight:700; text-transform:uppercase; letter-spacing:.02em}
+
+    .toolbar{display:flex; gap:10px; flex-wrap:wrap; margin-bottom:12px}
+
     input,select,textarea{
-      width:100%;
-      padding:12px;
-      border:1px solid #d9dde5;
-      border-radius:12px;
-      font-size:14px;
-      background:#fff;
-      color:var(--texto);
-      outline:none;
+      width:100%; padding:13px 14px; border:1.5px solid transparent; border-radius:var(--radius-sm);
+      font-size:15px; background:var(--bg); color:var(--label); outline:none; font-family:inherit; transition:.15s;
     }
-    input:focus,select:focus,textarea:focus{
-      border-color:var(--azul);
-      box-shadow:0 0 0 3px rgba(20,40,160,.08);
-    }
-    label{
-      display:block;
-      margin-bottom:6px;
-      font-size:12px;
-      font-weight:700;
-      color:#5b6472;
-      text-transform:uppercase;
-      letter-spacing:.03em;
-    }
-    .form-grid{
-      display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-      gap:12px;
-    }
-    .table-wrap{overflow:auto}
-    table{
-      width:100%;
-      border-collapse:collapse;
-      font-size:14px;
-    }
-    th,td{
-      padding:12px 10px;
-      border-bottom:1px solid #edf0f4;
-      text-align:left;
-      vertical-align:top;
-    }
-    th{
-      font-size:12px;
-      color:#6b7280;
-      text-transform:uppercase;
-      letter-spacing:.04em;
-    }
-    .row-actions{
-      display:flex;
-      flex-wrap:wrap;
-      gap:6px;
-    }
-    .badge{
-      display:inline-flex;
-      align-items:center;
-      border-radius:999px;
-      padding:5px 10px;
-      font-size:12px;
-      font-weight:700;
-    }
-    .badge-ativo{background:#e8f6ee;color:var(--verde)}
-    .badge-pendente{background:#fff5df;color:var(--warn)}
-    .badge-nao{background:#fde8e6;color:var(--danger)}
-    .badge-pronta{background:#e8eefc;color:var(--azul)}
-    .badge-enviado{background:#e8f6ee;color:var(--verde)}
-    .badge-revisar{background:#fff5df;color:var(--warn)}
-    .section-title{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:12px;
-      margin-bottom:12px;
-      flex-wrap:wrap;
-    }
-    .fab{
-      position:fixed;
-      right:20px;
-      bottom:20px;
-      width:58px;
-      height:58px;
-      border-radius:50%;
-      border:none;
-      background:var(--verde);
-      color:#fff;
-      font-size:28px;
-      box-shadow:0 10px 22px rgba(0,100,55,.3);
-      cursor:pointer;
-      z-index:30;
-    }
-    .modal{
-      position:fixed;
-      inset:0;
-      background:rgba(17,24,39,.5);
-      display:none;
-      align-items:flex-end;
-      z-index:50;
-    }
+    input:focus,select:focus,textarea:focus{background:#fff; border-color:var(--accent); box-shadow:0 0 0 4px rgba(10,132,255,.14)}
+    input::placeholder,textarea::placeholder{color:var(--label3)}
+    label{display:block; margin-bottom:6px; font-size:12px; font-weight:700; color:var(--label2); text-transform:uppercase; letter-spacing:.03em}
+    .form-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:12px}
+
+    .btn{border:none; border-radius:var(--radius-sm); padding:13px 16px; font-size:14.5px; font-weight:700; cursor:pointer; transition:transform .12s ease, opacity .12s ease; white-space:nowrap}
+    .btn:active{transform:scale(.96)}
+    .btn[disabled]{opacity:.5; cursor:not-allowed; transform:none}
+    .btn-azul{background:var(--accent); color:#fff; box-shadow:0 4px 12px rgba(10,132,255,.28)}
+    .btn-verde{background:var(--success); color:#fff; box-shadow:0 4px 12px rgba(52,199,89,.28)}
+    .btn-prata{background:var(--bg); color:var(--label); border:1px solid var(--border)}
+    .btn-branco{background:#fff; color:var(--brand1)}
+    .btn-danger{background:var(--danger); color:#fff}
+    .btn-ghost{background:rgba(255,255,255,.16); color:#fff}
+    .btn-full{width:100%}
+    .btn-sm{padding:9px 12px; font-size:12.5px; border-radius:10px}
+    .btn-icon{display:inline-flex; align-items:center; gap:6px}
+    .btn-icon svg{width:15px;height:15px}
+
+    .list-table{width:100%; border-collapse:separate; border-spacing:0 10px; font-size:14px}
+    .list-table thead{display:none}
+    .list-table, .list-table tbody, .list-table tr, .list-table td{display:block; width:100%}
+    .list-table tr{background:var(--card); border-radius:var(--radius-md); box-shadow:var(--shadow); border:1px solid var(--border); padding:14px 16px}
+    .list-table td{border:none; padding:6px 0; display:flex; justify-content:space-between; gap:14px; align-items:flex-start}
+    .list-table td::before{content:attr(data-label); font-size:10.5px; font-weight:800; color:var(--label3); text-transform:uppercase; letter-spacing:.04em; flex:0 0 auto; padding-top:2px}
+    .list-table td:last-child{display:block; padding-top:10px}
+    .list-table td:last-child::before{display:none}
+    .list-table td:not(:last-child):not(:first-child){border-top:1px solid var(--border); padding-top:8px}
+
+    .row-actions{display:flex; flex-wrap:wrap; gap:6px}
+
+    .badge{display:inline-flex; align-items:center; border-radius:999px; padding:5px 11px; font-size:11.5px; font-weight:800}
+    .badge-ativo{background:rgba(52,199,89,.14); color:var(--success-strong)}
+    .badge-pendente{background:rgba(255,149,0,.16); color:var(--warn-strong)}
+    .badge-nao{background:rgba(255,59,48,.14); color:var(--danger-strong)}
+    .badge-pronta{background:rgba(10,132,255,.14); color:var(--accent-strong)}
+    .badge-enviado{background:rgba(52,199,89,.14); color:var(--success-strong)}
+    .badge-revisar{background:rgba(255,149,0,.16); color:var(--warn-strong)}
+
+    .section-title{display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:12px; flex-wrap:wrap}
+
+    .fab{position:fixed; right:18px; bottom:calc(18px + env(safe-area-inset-bottom)); width:60px; height:60px; border-radius:50%; border:none; background:var(--accent); color:#fff; display:flex; align-items:center; justify-content:center; box-shadow:0 12px 26px rgba(10,132,255,.42); cursor:pointer; z-index:30; transition:.15s}
+    .fab:active{transform:scale(.9)}
+    .fab svg{width:26px;height:26px}
+
+    .modal{position:fixed; inset:0; background:rgba(17,24,39,.45); backdrop-filter:blur(3px); display:none; align-items:flex-end; justify-content:center; z-index:50}
     .modal.open{display:flex}
-    .modal-content{
-      width:100%;
-      max-width:1100px;
-      margin:0 auto;
-      background:#fff;
-      border-radius:24px 24px 0 0;
-      padding:18px;
-      max-height:92vh;
-      overflow:auto;
-    }
-    .modal-header{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-      margin-bottom:16px;
-    }
-    .login-wrap{
-      min-height:100vh;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      padding:20px;
-      background:linear-gradient(160deg,#eef3fb,#f5f7fa);
-    }
-    .login-card{
-      width:100%;
-      max-width:420px;
-      background:#fff;
-      border-radius:24px;
-      box-shadow:var(--shadow);
-      padding:24px;
-    }
-    .login-brand{
-      text-align:center;
-      margin-bottom:18px;
-    }
-    .login-brand .icon{
-      width:62px;height:62px;border-radius:18px;
-      margin:0 auto 10px;
-      display:flex;align-items:center;justify-content:center;
-      background:linear-gradient(135deg,var(--azul),var(--verde));
-      color:#fff;font-size:30px;
-    }
-    .login-brand h1{
-      margin:0 0 6px;
-      color:var(--azul);
-      font-size:24px;
-    }
-    .login-brand p{
-      margin:0;
-      color:var(--muted);
-    }
-    .login-msg{
-      margin-top:10px;
-      font-size:13px;
-      font-weight:600;
-      min-height:18px;
-    }
-    .config-warning{
-      margin-top:14px;
-      padding:10px 12px;
-      background:#fde8e6;
-      color:var(--danger);
-      border-radius:12px;
-      font-size:12px;
-      font-weight:600;
-      line-height:1.5;
-      display:none;
-    }
+    .modal-content{width:100%; max-width:640px; margin:0 auto; background:var(--card); border-radius:28px 28px 0 0; padding:14px 20px calc(20px + env(safe-area-inset-bottom)); max-height:92vh; overflow:auto; animation:slideUp .26s cubic-bezier(.2,.9,.25,1)}
+    @keyframes slideUp{from{transform:translateY(60px); opacity:.4} to{transform:translateY(0); opacity:1}}
+    .sheet-handle{width:38px; height:5px; border-radius:99px; background:#D1D1D6; margin:0 auto 14px}
+    .modal-header{display:flex; align-items:flex-start; justify-content:space-between; gap:10px; margin-bottom:14px}
+
+    .login-wrap{min-height:100vh; display:flex; align-items:center; justify-content:center; padding:20px; background:linear-gradient(160deg,#eef3fb,#f5f7fa)}
+    .login-card{width:100%; max-width:420px; background:#fff; border-radius:var(--radius-lg); box-shadow:var(--shadow); padding:28px}
+    .login-brand{text-align:center; margin-bottom:20px}
+    .login-brand .icon{width:64px;height:64px;border-radius:20px; margin:0 auto 12px; display:flex;align-items:center;justify-content:center; background:linear-gradient(135deg,var(--brand1),var(--success)); color:#fff;font-size:30px; box-shadow:0 10px 24px rgba(20,40,160,.25)}
+    .login-brand h1{margin:0 0 6px; color:var(--brand1); font-size:24px; font-weight:800}
+    .login-brand p{margin:0; color:var(--label2)}
+    .login-msg{margin-top:10px; font-size:13px; font-weight:700; min-height:18px}
+    .config-warning{margin-top:14px; padding:12px 14px; background:rgba(255,59,48,.1); color:var(--danger-strong); border-radius:var(--radius-sm); font-size:12px; font-weight:600; line-height:1.5; display:none}
     .config-warning.show{display:block}
-    .progress{
-      background:#edf2f7;
-      border-radius:999px;
-      overflow:hidden;
-      height:12px;
-    }
-    .progress-bar{
-      height:100%;
-      background:linear-gradient(90deg,var(--verde),#0f8d58);
-      width:0%;
-      transition:.3s;
-    }
-    .small{font-size:12px}
-    .checklist-item{
-      display:flex;
-      justify-content:space-between;
-      gap:10px;
-      padding:8px 0;
-      border-bottom:1px solid #edf0f4;
-    }
-    .pill{
-      background:#eef2ff;
-      color:var(--azul);
-      padding:6px 10px;
-      border-radius:999px;
-      font-size:12px;
-      font-weight:700;
-    }
-    .upload-preview{
-      margin-top:10px;
-      font-size:13px;
-      color:var(--muted);
-      word-break:break-all;
-    }
-    .empty{
-      text-align:center;
-      color:var(--muted);
-      padding:28px 12px;
-    }
-    @media (max-width:700px){
-      .row-actions{flex-direction:column}
-      .row-actions .btn{width:100%}
-      .modal-content{padding:16px}
-      table{font-size:13px}
-      th,td{padding:10px 8px}
+
+    .progress{background:#E5E5EA; border-radius:999px; overflow:hidden; height:10px}
+    .progress-bar{height:100%; background:linear-gradient(90deg,var(--success),#28a745); width:0%; transition:.3s}
+    .small{font-size:12.5px}
+    .checklist-item{display:flex; justify-content:space-between; gap:10px; padding:8px 0; border-bottom:1px solid var(--border)}
+    .checklist-item:last-child{border-bottom:none}
+    .pill{background:rgba(10,132,255,.12); color:var(--accent-strong); padding:6px 12px; border-radius:999px; font-size:12px; font-weight:800}
+    .upload-preview{margin-top:10px; font-size:13px; color:var(--label2); word-break:break-all}
+    .empty{text-align:center; color:var(--label2); padding:32px 12px; font-size:14px}
+    .help-text{font-size:12.5px; color:var(--label2); line-height:1.5; margin-top:6px}
+
+    .picker-list{max-height:320px; overflow:auto; border:1px solid var(--border); border-radius:var(--radius-md); margin-top:10px}
+    .picker-row{display:flex; align-items:center; gap:12px; padding:12px 14px; border-bottom:1px solid var(--border); cursor:pointer}
+    .picker-row:last-child{border-bottom:none}
+    .picker-row input[type=checkbox]{width:21px; height:21px; accent-color:var(--accent); flex:0 0 auto}
+    .picker-title{font-weight:700; font-size:14px}
+    .picker-sub{margin-top:2px}
+
+    .fila-card{background:var(--bg); border-radius:var(--radius-md); padding:16px}
+    .fila-nome{font-size:19px; font-weight:800; color:var(--label)}
+
+    @media (max-width:480px){
+      .modal-content{padding:14px 16px calc(18px + env(safe-area-inset-bottom))}
     }
   </style>
 </head>
@@ -385,16 +182,16 @@
         <label>E-mail</label>
         <input type="email" id="loginEmail" placeholder="seu@email.com" />
       </div>
-      <div>
+      <div style="margin-top:12px">
         <label>Senha</label>
         <input type="password" id="loginSenha" placeholder="••••••••" />
       </div>
 
-      <button class="btn btn-azul btn-full" id="btnEntrar">Entrar</button>
+      <button class="btn btn-azul btn-full" id="btnEntrar" style="margin-top:16px">Entrar</button>
       <div class="login-msg" id="loginMsg"></div>
       <div class="config-warning" id="configWarning">
         ⚠️ A SUPABASE_KEY no código ainda é um placeholder. Abra o arquivo, troque
-        <code>sb_publishable_V-H9Nrudxrl7yB1ItYQryw_Gkq852t8</code> pela sua <strong>anon public key</strong>
+        <code>COLOQUE_AQUI_SUA_ANON_KEY</code> pela sua <strong>anon public key</strong>
         (Supabase → Settings → API → Project API keys) e salve de novo.
       </div>
 
@@ -407,27 +204,51 @@
 
   <div id="appView" class="app-shell hidden">
     <header>
-      <div class="header-top">
-        <div class="brand">
-          <div class="logo">🌱</div>
-          <div>
-            <h1>Assistente Comercial</h1>
-            <small>Objetivo, rápido e com menos cliques</small>
+      <div class="header-inner">
+        <div class="header-top">
+          <div class="brand">
+            <div class="logo">🌱</div>
+            <div>
+              <h1>Assistente Comercial</h1>
+              <small>Objetivo, rápido e com menos cliques</small>
+            </div>
+          </div>
+          <div class="top-actions">
+            <button class="icon-btn" id="btnRefresh" title="Atualizar">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+            </button>
+            <button class="icon-btn" id="btnLogout" title="Sair">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+            </button>
           </div>
         </div>
-        <div class="top-actions">
-          <button class="btn btn-ghost" id="btnRefresh">Atualizar</button>
-          <button class="btn btn-branco" id="btnLogout">Sair</button>
-        </div>
+        <nav>
+          <button class="nav-btn active" data-page="dashboard">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            <span>Início</span>
+          </button>
+          <button class="nav-btn" data-page="clientes">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            <span>Clientes</span>
+          </button>
+          <button class="nav-btn" data-page="ofertas">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+            <span>Ofertas</span>
+          </button>
+          <button class="nav-btn" data-page="templates">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+            <span>Templates</span>
+          </button>
+          <button class="nav-btn" data-page="envios">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+            <span>Envios</span>
+          </button>
+          <button class="nav-btn" data-page="historico">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            <span>Histórico</span>
+          </button>
+        </nav>
       </div>
-      <nav>
-        <button class="nav-btn active" data-page="dashboard">Início</button>
-        <button class="nav-btn" data-page="clientes">Clientes</button>
-        <button class="nav-btn" data-page="ofertas">Ofertas</button>
-        <button class="nav-btn" data-page="templates">Templates</button>
-        <button class="nav-btn" data-page="envios">Envios</button>
-        <button class="nav-btn" data-page="historico">Histórico</button>
-      </nav>
     </header>
 
     <main>
@@ -435,26 +256,26 @@
       <section id="page-dashboard" class="page">
         <div class="grid grid-3">
           <div class="card kpi">
-            <div class="label">Total de clientes</div>
+            <div class="label">Clientes</div>
             <div class="value" id="kpiClientes">0</div>
-            <div class="muted small">Carteira ativa e cadastrada</div>
+            <div class="muted small">Carteira ativa</div>
           </div>
           <div class="card kpi">
-            <div class="label">Ofertas ativas</div>
+            <div class="label">Ofertas</div>
             <div class="value" id="kpiOfertas">0</div>
-            <div class="muted small">Cadastradas no sistema</div>
+            <div class="muted small">No sistema</div>
           </div>
           <div class="card kpi">
-            <div class="label">Envios preparados</div>
+            <div class="label">Envios</div>
             <div class="value" id="kpiEnvios">0</div>
-            <div class="muted small">Fila pronta para WhatsApp</div>
+            <div class="muted small">Fila WhatsApp</div>
           </div>
         </div>
 
         <div class="grid grid-2" style="margin-top:14px">
           <div class="card">
             <div class="section-title">
-              <h3>Checklist de conclusão</h3>
+              <h3>Checklist</h3>
               <span class="pill" id="progressPct">0% pronto</span>
             </div>
             <div class="progress"><div class="progress-bar" id="progressBar"></div></div>
@@ -462,14 +283,12 @@
           </div>
 
           <div class="card">
-            <div class="section-title">
-              <h3>Ações rápidas</h3>
-            </div>
+            <div class="section-title"><h3>Ações rápidas</h3></div>
             <div class="grid">
-              <button class="btn btn-verde" onclick="openClienteModal()">+ Novo cliente</button>
-              <button class="btn btn-azul" onclick="openOfertaModal()">+ Nova oferta</button>
+              <button class="btn btn-verde" onclick="openLoteModal()">📤 Preparar envio em lote</button>
+              <button class="btn btn-azul" onclick="openClienteModal()">+ Novo cliente</button>
+              <button class="btn btn-prata" onclick="openOfertaModal()">+ Nova oferta</button>
               <button class="btn btn-prata" onclick="openTemplateModal()">+ Novo template</button>
-              <button class="btn btn-prata" onclick="goPage('envios')">Ir para central de envio</button>
             </div>
           </div>
         </div>
@@ -493,21 +312,12 @@
             </select>
           </div>
 
-          <div class="table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th>Nome</th>
-                  <th>Telefone</th>
-                  <th>Município</th>
-                  <th>Cultura</th>
-                  <th>Status</th>
-                  <th>Ações</th>
-                </tr>
-              </thead>
-              <tbody id="clientesTable"></tbody>
-            </table>
-          </div>
+          <table class="list-table">
+            <thead>
+              <tr><th>Nome</th><th>Telefone</th><th>Município</th><th>Cultura</th><th>Status</th><th>Ações</th></tr>
+            </thead>
+            <tbody id="clientesTable"></tbody>
+          </table>
         </div>
       </section>
 
@@ -518,22 +328,12 @@
             <h3>Ofertas</h3>
             <button class="btn btn-verde" onclick="openOfertaModal()">+ Nova oferta</button>
           </div>
-
-          <div class="table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th>Produto</th>
-                  <th>Preço</th>
-                  <th>Validade</th>
-                  <th>Região</th>
-                  <th>Arquivo</th>
-                  <th>Ações</th>
-                </tr>
-              </thead>
-              <tbody id="ofertasTable"></tbody>
-            </table>
-          </div>
+          <table class="list-table">
+            <thead>
+              <tr><th>Produto</th><th>Preço</th><th>Validade</th><th>Região</th><th>Arquivo</th><th>Ações</th></tr>
+            </thead>
+            <tbody id="ofertasTable"></tbody>
+          </table>
         </div>
       </section>
 
@@ -544,19 +344,13 @@
             <h3>Templates</h3>
             <button class="btn btn-verde" onclick="openTemplateModal()">+ Novo template</button>
           </div>
-          <div class="table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th>Título</th>
-                  <th>Cultura</th>
-                  <th>Corpo</th>
-                  <th>Ações</th>
-                </tr>
-              </thead>
-              <tbody id="templatesTable"></tbody>
-            </table>
-          </div>
+          <p class="help-text">O corpo do template é o <strong>meio da mensagem</strong> (igual para todos os produtores do envio). A saudação e o encerramento personalizados ficam salvos no cadastro de cada cliente.</p>
+          <table class="list-table">
+            <thead>
+              <tr><th>Título</th><th>Cultura</th><th>Corpo</th><th>Ações</th></tr>
+            </thead>
+            <tbody id="templatesTable"></tbody>
+          </table>
         </div>
       </section>
 
@@ -565,8 +359,12 @@
         <div class="card">
           <div class="section-title">
             <h3>Central de envio</h3>
-            <button class="btn btn-verde" onclick="openEnvioModal()">+ Preparar envio</button>
+            <button class="btn btn-verde btn-icon" onclick="openLoteModal()">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+              Preparar envio em lote
+            </button>
           </div>
+          <p class="help-text">Selecione vários produtores de uma vez, o sistema monta a mensagem de cada um (saudação + oferta + encerramento), e você passa por eles no modo envio, 2 cliques por pessoa.</p>
           <div class="toolbar">
             <select id="envioFiltroSituacao">
               <option value="">Todas as situações</option>
@@ -577,21 +375,12 @@
               <option value="erro">Erro</option>
             </select>
           </div>
-          <div class="table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th>Cliente</th>
-                  <th>Oferta</th>
-                  <th>Mensagem</th>
-                  <th>Panfleto</th>
-                  <th>Situação</th>
-                  <th>Ações</th>
-                </tr>
-              </thead>
-              <tbody id="enviosTable"></tbody>
-            </table>
-          </div>
+          <table class="list-table">
+            <thead>
+              <tr><th>Cliente</th><th>Oferta</th><th>Mensagem</th><th>Panfleto</th><th>Situação</th><th>Ações</th></tr>
+            </thead>
+            <tbody id="enviosTable"></tbody>
+          </table>
         </div>
       </section>
 
@@ -602,31 +391,25 @@
             <h3>Histórico comercial</h3>
             <button class="btn btn-verde" onclick="openHistoricoModal()">+ Novo registro</button>
           </div>
-          <div class="table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th>Cliente</th>
-                  <th>Contato</th>
-                  <th>Resposta</th>
-                  <th>Venda</th>
-                  <th>Próximo contato</th>
-                  <th>Ações</th>
-                </tr>
-              </thead>
-              <tbody id="historicoTable"></tbody>
-            </table>
-          </div>
+          <table class="list-table">
+            <thead>
+              <tr><th>Cliente</th><th>Contato</th><th>Resposta</th><th>Venda</th><th>Próximo contato</th><th>Ações</th></tr>
+            </thead>
+            <tbody id="historicoTable"></tbody>
+          </table>
         </div>
       </section>
     </main>
 
-    <button class="fab" id="fabBtn">+</button>
+    <button class="fab" id="fabBtn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+    </button>
   </div>
 
   <!-- MODAL CLIENTE -->
   <div class="modal" id="clienteModal">
     <div class="modal-content">
+      <div class="sheet-handle"></div>
       <div class="modal-header">
         <h3 id="clienteModalTitle">Novo cliente</h3>
         <button class="btn btn-prata" onclick="closeModal('clienteModal')">Fechar</button>
@@ -641,11 +424,7 @@
           <label>Cultura</label>
           <select id="clienteCultura">
             <option value="">Selecione</option>
-            <option>Soja</option>
-            <option>Milho</option>
-            <option>Algodão</option>
-            <option>Sorgo</option>
-            <option>Outra</option>
+            <option>Soja</option><option>Milho</option><option>Algodão</option><option>Sorgo</option><option>Outra</option>
           </select>
         </div>
         <div><label>Área plantada (ha)</label><input id="clienteArea" type="number" /></div>
@@ -659,6 +438,17 @@
           </select>
         </div>
       </div>
+
+      <div style="margin-top:14px">
+        <label>Saudação personalizada</label>
+        <textarea id="clienteSaudacao" rows="2" placeholder="Ex.: Bom dia tchê, bom Adriano?"></textarea>
+        <div class="help-text">Usada como abertura de toda mensagem enviada pra este cliente. Aceita {nome}, {municipio}, {fazenda}, {cultura}.</div>
+      </div>
+      <div style="margin-top:12px">
+        <label>Encerramento personalizado</label>
+        <textarea id="clienteEncerramento" rows="2" placeholder="Ex.: Um abraço, qualquer coisa me chama!"></textarea>
+      </div>
+
       <div style="margin-top:12px">
         <label>Observações</label>
         <textarea id="clienteObs" rows="3"></textarea>
@@ -673,6 +463,7 @@
   <!-- MODAL OFERTA -->
   <div class="modal" id="ofertaModal">
     <div class="modal-content">
+      <div class="sheet-handle"></div>
       <div class="modal-header">
         <h3 id="ofertaModalTitle">Nova oferta</h3>
         <button class="btn btn-prata" onclick="closeModal('ofertaModal')">Fechar</button>
@@ -706,6 +497,7 @@
   <!-- MODAL TEMPLATE -->
   <div class="modal" id="templateModal">
     <div class="modal-content">
+      <div class="sheet-handle"></div>
       <div class="modal-header">
         <h3 id="templateModalTitle">Novo template</h3>
         <button class="btn btn-prata" onclick="closeModal('templateModal')">Fechar</button>
@@ -716,11 +508,11 @@
         <div><label>Cultura</label><input id="templateCultura" placeholder="Ex.: Soja" /></div>
       </div>
       <div style="margin-top:12px">
-        <label>Corpo *</label>
-        <textarea id="templateCorpo" rows="6" placeholder="Bom dia, {nome}. Estou com uma condição especial para {produto}, válida até {validade}."></textarea>
+        <label>Corpo principal * <span style="text-transform:none; font-weight:500">(meio da mensagem)</span></label>
+        <textarea id="templateCorpo" rows="6" placeholder="Estou com uma condição especial para {produto}, válida até {validade}."></textarea>
       </div>
-      <div class="small muted" style="margin-top:8px">
-        Variáveis: {nome}, {produto}, {validade}, {fazenda}, {municipio}, {cultura}
+      <div class="help-text">
+        Variáveis: {nome}, {produto}, {validade}, {fazenda}, {municipio}, {cultura}. A saudação e o encerramento de cada cliente são adicionados automaticamente antes e depois deste texto — não repita "Bom dia" aqui.
       </div>
       <div class="toolbar" style="margin-top:14px">
         <button class="btn btn-verde" onclick="saveTemplate()">Salvar template</button>
@@ -729,50 +521,109 @@
     </div>
   </div>
 
-  <!-- MODAL ENVIO -->
+  <!-- MODAL LOTE (ENVIO EM LOTE) -->
+  <div class="modal" id="loteModal">
+    <div class="modal-content">
+      <div class="sheet-handle"></div>
+      <div class="modal-header">
+        <h3>Preparar envio em lote</h3>
+        <button class="btn btn-prata" onclick="closeModal('loteModal')">Fechar</button>
+      </div>
+
+      <div class="form-grid">
+        <div><label>Oferta *</label><select id="loteOferta"></select></div>
+        <div><label>Template (corpo principal)</label><select id="loteTemplate"></select></div>
+      </div>
+
+      <div style="margin-top:18px">
+        <div class="section-title">
+          <h4 style="margin:0">Selecionar produtores</h4>
+          <span class="pill" id="loteContagem">0 selecionados</span>
+        </div>
+        <div class="toolbar">
+          <input id="loteBusca" placeholder="Buscar por nome, município, cultura..." />
+          <select id="loteFiltroStatus">
+            <option value="">Todos os status</option>
+            <option value="ativo">Ativo</option>
+            <option value="pendente">Pendente</option>
+            <option value="nao_contatar">Não contatar</option>
+          </select>
+        </div>
+        <div class="toolbar" style="margin-bottom:0">
+          <button class="btn btn-prata btn-sm" onclick="loteSelecionarTodosFiltrados()">Selecionar todos filtrados</button>
+          <button class="btn btn-prata btn-sm" onclick="loteLimparSelecao()">Limpar seleção</button>
+        </div>
+        <div class="picker-list" id="loteClientesList"></div>
+      </div>
+
+      <div class="toolbar" style="margin-top:18px">
+        <button class="btn btn-verde btn-full" onclick="gerarEIniciarLote()">Gerar mensagens e iniciar envio</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL FILA (MODO ENVIO) -->
+  <div class="modal" id="filaModal">
+    <div class="modal-content">
+      <div class="sheet-handle"></div>
+      <div class="modal-header">
+        <div>
+          <h3 style="margin-bottom:2px">Modo envio</h3>
+          <div class="small muted" id="filaProgresso">1 de 1</div>
+        </div>
+        <button class="btn btn-prata" onclick="fecharFila()">Encerrar</button>
+      </div>
+
+      <div class="progress"><div class="progress-bar" id="filaProgressBar"></div></div>
+
+      <div class="fila-card" id="filaCardInfo" style="margin-top:16px"></div>
+
+      <div style="margin-top:12px">
+        <label>Mensagem</label>
+        <textarea id="filaMensagem" rows="8"></textarea>
+      </div>
+
+      <div class="toolbar" style="margin-top:14px">
+        <button class="btn btn-verde btn-full btn-icon" onclick="filaAbrirWhats()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+          Abrir no WhatsApp
+        </button>
+      </div>
+      <div class="toolbar" style="margin-top:8px">
+        <button class="btn btn-azul" onclick="filaMarcarEnviado()">✓ Marcar enviado e avançar</button>
+        <button class="btn btn-prata" onclick="filaPular()">Pular</button>
+      </div>
+
+      <div class="empty hidden" id="filaConcluida">🎉 Todos os envios deste lote foram concluídos!</div>
+    </div>
+  </div>
+
+  <!-- MODAL ENVIO (EDITAR) -->
   <div class="modal" id="envioModal">
     <div class="modal-content">
+      <div class="sheet-handle"></div>
       <div class="modal-header">
-        <h3 id="envioModalTitle">Preparar envio</h3>
+        <h3>Editar envio</h3>
         <button class="btn btn-prata" onclick="closeModal('envioModal')">Fechar</button>
       </div>
       <input type="hidden" id="envioId" />
-      <div class="form-grid">
-        <div>
-          <label>Cliente *</label>
-          <select id="envioCliente"></select>
-        </div>
-        <div>
-          <label>Oferta *</label>
-          <select id="envioOferta"></select>
-        </div>
-        <div>
-          <label>Template</label>
-          <select id="envioTemplate"></select>
-        </div>
-        <div>
-          <label>Situação</label>
-          <select id="envioSituacao">
-            <option value="pendente">Pendente</option>
-            <option value="pronta">Pronta</option>
-            <option value="revisar">Revisar</option>
-            <option value="enviado">Enviado</option>
-            <option value="erro">Erro</option>
-          </select>
-        </div>
+      <div class="small muted" id="envioInfo" style="margin-bottom:10px"></div>
+      <div>
+        <label>Situação</label>
+        <select id="envioSituacao">
+          <option value="pendente">Pendente</option>
+          <option value="pronta">Pronta</option>
+          <option value="revisar">Revisar</option>
+          <option value="enviado">Enviado</option>
+          <option value="erro">Erro</option>
+        </select>
       </div>
-
-      <div style="margin-top:12px">
-        <button class="btn btn-prata" onclick="gerarMensagemTemplate()">Gerar mensagem pelo template</button>
-      </div>
-
       <div style="margin-top:12px">
         <label>Mensagem final</label>
         <textarea id="envioMensagem" rows="7"></textarea>
       </div>
-
       <div class="toolbar" style="margin-top:14px">
-        <button class="btn btn-verde" onclick="saveEnvio()">Salvar envio</button>
+        <button class="btn btn-verde" onclick="saveEnvio()">Salvar alterações</button>
         <button class="btn btn-prata" onclick="closeModal('envioModal')">Cancelar</button>
       </div>
     </div>
@@ -781,35 +632,21 @@
   <!-- MODAL HISTORICO -->
   <div class="modal" id="historicoModal">
     <div class="modal-content">
+      <div class="sheet-handle"></div>
       <div class="modal-header">
         <h3 id="historicoModalTitle">Novo histórico</h3>
         <button class="btn btn-prata" onclick="closeModal('historicoModal')">Fechar</button>
       </div>
       <input type="hidden" id="historicoId" />
       <div class="form-grid">
-        <div>
-          <label>Cliente *</label>
-          <select id="historicoCliente"></select>
-        </div>
-        <div>
-          <label>Oferta</label>
-          <select id="historicoOferta"></select>
-        </div>
+        <div><label>Cliente *</label><select id="historicoCliente"></select></div>
+        <div><label>Oferta</label><select id="historicoOferta"></select></div>
         <div>
           <label>Venda gerada</label>
-          <select id="historicoVenda">
-            <option value="false">Não</option>
-            <option value="true">Sim</option>
-          </select>
+          <select id="historicoVenda"><option value="false">Não</option><option value="true">Sim</option></select>
         </div>
-        <div>
-          <label>Valor da venda</label>
-          <input id="historicoValor" type="number" step="0.01" />
-        </div>
-        <div>
-          <label>Próximo contato</label>
-          <input id="historicoProximo" type="date" />
-        </div>
+        <div><label>Valor da venda</label><input id="historicoValor" type="number" step="0.01" /></div>
+        <div><label>Próximo contato</label><input id="historicoProximo" type="date" /></div>
       </div>
       <div style="margin-top:12px">
         <label>Resposta do cliente</label>
@@ -829,13 +666,6 @@
   <script type="module">
     import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
 
-    // ============================================================
-    // ⚠️ CONFIGURAÇÃO OBRIGATÓRIA
-    // Vá em Supabase → Settings → API → "Project API keys" e copie
-    // a chave "anon public" (começa com "eyJhbGci..."). Cole abaixo,
-    // substituindo o placeholder. NÃO use uma chave "sb_publishable_...":
-    // esse formato não autentica o client-side corretamente.
-    // ============================================================
     const SUPABASE_URL = 'https://diklxzebdhwwynjofhrm.supabase.co'
     const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRpa2x4emViZGh3d3luam9maHJtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODU1NzE0ODIsImV4cCI6MjEwMTE0NzQ4Mn0.Qz-nV1IEHGPzDi_itYbroV-LLVq-bpVbfbxzqx6zXWE'
     const BUCKET = 'panfletos'
@@ -858,18 +688,31 @@
       historico: []
     }
 
+    let loteSelectedIds = new Set()
+    let filaState = { loteId:null, itens:[], index:0 }
+
+    function gerarUUID(){
+      if(window.crypto && typeof crypto.randomUUID === 'function') return crypto.randomUUID()
+      return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
+        const r = Math.random() * 16 | 0
+        const v = c === 'x' ? r : (r & 0x3 | 0x8)
+        return v.toString(16)
+      })
+    }
+
     const checklist = [
-      { label: 'Setup/Base', done: true, weight: 15 },
+      { label: 'Setup/Base', done: true, weight: 12 },
       { label: 'Login', done: true, weight: 5 },
-      { label: 'Clientes CRUD', done: true, weight: 13 },
+      { label: 'Clientes CRUD', done: true, weight: 10 },
       { label: 'Importação Excel', done: false, weight: 5 },
       { label: 'Ofertas CRUD', done: true, weight: 8 },
       { label: 'Upload panfleto', done: true, weight: 5 },
       { label: 'Templates', done: true, weight: 3 },
-      { label: 'Central de envio', done: true, weight: 15 },
+      { label: 'Envio em lote + fila', done: true, weight: 15 },
+      { label: 'Personalização por cliente', done: true, weight: 10 },
       { label: 'Histórico', done: true, weight: 10 },
       { label: 'PWA completa', done: false, weight: 7 },
-      { label: 'Testes iPhone/Android', done: false, weight: 14 }
+      { label: 'Testes iPhone/Android', done: false, weight: 10 }
     ]
 
     // ---------- UTIL ----------
@@ -880,10 +723,8 @@
       el.style.color = ok ? '#0f9d58' : '#c0392b'
     }
 
-    // Traduz erros comuns do Supabase Auth para mensagens claras em pt-BR
     function traduzErroLogin(error){
       const msg = (error?.message || '').toLowerCase()
-
       if(msg.includes('invalid api key') || msg.includes('invalid_api_key')){
         return 'A chave do Supabase (SUPABASE_KEY) está incorreta ou é do tipo errado. Confira a "anon public key" em Settings → API.'
       }
@@ -904,30 +745,20 @@
 
     function fmtDate(v){
       if(!v) return '—'
-      try{
-        return new Date(v).toLocaleDateString('pt-BR')
-      }catch{ return v }
+      try{ return new Date(v).toLocaleDateString('pt-BR') }catch{ return v }
     }
-
     function fmtDateTime(v){
       if(!v) return '—'
-      try{
-        return new Date(v).toLocaleString('pt-BR')
-      }catch{ return v }
+      try{ return new Date(v).toLocaleString('pt-BR') }catch{ return v }
     }
-
     function fmtMoney(v){
       if(v === null || v === undefined || v === '') return '—'
       return Number(v).toLocaleString('pt-BR',{ style:'currency', currency:'BRL' })
     }
-
     function escapeHtml(text=''){
       return String(text)
-        .replaceAll('&','&amp;')
-        .replaceAll('<','&lt;')
-        .replaceAll('>','&gt;')
-        .replaceAll('"','&quot;')
-        .replaceAll("'","&#039;")
+        .replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;')
+        .replaceAll('"','&quot;').replaceAll("'","&#039;")
     }
 
     function badgeStatusCliente(status){
@@ -935,7 +766,6 @@
       if(status === 'pendente') return `<span class="badge badge-pendente">Pendente</span>`
       return `<span class="badge badge-nao">Não contatar</span>`
     }
-
     function badgeStatusEnvio(status){
       if(status === 'pronta') return `<span class="badge badge-pronta">Pronta</span>`
       if(status === 'enviado') return `<span class="badge badge-enviado">Enviado</span>`
@@ -957,6 +787,8 @@
       $('clienteArea').value = ''
       $('clienteProdutos').value = ''
       $('clienteStatus').value = 'ativo'
+      $('clienteSaudacao').value = ''
+      $('clienteEncerramento').value = ''
       $('clienteObs').value = ''
       $('clienteModalTitle').textContent = 'Novo cliente'
     }
@@ -984,14 +816,6 @@
       $('templateModalTitle').textContent = 'Novo template'
     }
 
-    function resetEnvioForm(){
-      $('envioId').value = ''
-      $('envioMensagem').value = ''
-      $('envioSituacao').value = 'pendente'
-      $('envioModalTitle').textContent = 'Preparar envio'
-      fillEnvioSelects()
-    }
-
     function resetHistoricoForm(){
       $('historicoId').value = ''
       $('historicoResposta').value = ''
@@ -1006,7 +830,6 @@
     window.openClienteModal = () => { resetClienteForm(); openModal('clienteModal') }
     window.openOfertaModal = () => { resetOfertaForm(); openModal('ofertaModal') }
     window.openTemplateModal = () => { resetTemplateForm(); openModal('templateModal') }
-    window.openEnvioModal = () => { resetEnvioForm(); openModal('envioModal') }
     window.openHistoricoModal = () => { resetHistoricoForm(); openModal('historicoModal') }
 
     function goPage(page){
@@ -1023,26 +846,19 @@
         showMsg($('loginMsg'), 'Configure a SUPABASE_KEY antes de tentar entrar (veja o aviso acima).')
         return
       }
-
       const email = $('loginEmail').value.trim()
       const password = $('loginSenha').value.trim()
       const msg = $('loginMsg')
       const btn = $('btnEntrar')
 
       msg.textContent = ''
-      if(!email || !password){
-        return showMsg(msg, 'Informe e-mail e senha.')
-      }
+      if(!email || !password){ return showMsg(msg, 'Informe e-mail e senha.') }
 
       btn.setAttribute('disabled', 'true')
       btn.textContent = 'Entrando...'
-
       try{
         const { error } = await supabase.auth.signInWithPassword({ email, password })
-        if(error){
-          showMsg(msg, traduzErroLogin(error))
-          return
-        }
+        if(error){ showMsg(msg, traduzErroLogin(error)); return }
         await initApp()
       }catch(err){
         showMsg(msg, traduzErroLogin(err))
@@ -1061,10 +877,7 @@
     $('btnEntrar').addEventListener('click', login)
     $('loginSenha').addEventListener('keydown', (e) => { if(e.key === 'Enter') login() })
     $('btnLogout').addEventListener('click', logout)
-    $('btnRefresh').addEventListener('click', async () => {
-      await loadAll()
-      renderAll()
-    })
+    $('btnRefresh').addEventListener('click', async () => { await loadAll(); renderAll() })
 
     // ---------- LOAD ----------
     async function loadClientes(){
@@ -1072,63 +885,41 @@
       if(error) throw error
       state.clientes = data || []
     }
-
     async function loadOfertas(){
       const { data, error } = await supabase.from('ofertas').select('*').order('criado_em', { ascending:false })
       if(error) throw error
       state.ofertas = data || []
-
       const ids = state.ofertas.map(o => o.id)
       if(ids.length){
         const { data:arqs, error:err2 } = await supabase.from('arquivos_oferta').select('*').in('oferta_id', ids)
         if(err2) throw err2
         state.arquivos = arqs || []
-      } else {
-        state.arquivos = []
-      }
+      } else { state.arquivos = [] }
     }
-
     async function loadTemplates(){
       const { data, error } = await supabase.from('templates').select('*').order('titulo')
       if(error) throw error
       state.templates = data || []
     }
-
     async function loadEnvios(){
-      const { data, error } = await supabase
-        .from('envios')
-        .select('*')
-        .order('criado_em', { ascending:false })
+      const { data, error } = await supabase.from('envios').select('*').order('criado_em', { ascending:false })
       if(error) throw error
       state.envios = data || []
     }
-
     async function loadHistorico(){
-      const { data, error } = await supabase
-        .from('historico')
-        .select('*')
-        .order('data_contato', { ascending:false })
+      const { data, error } = await supabase.from('historico').select('*').order('data_contato', { ascending:false })
       if(error) throw error
       state.historico = data || []
     }
-
     async function loadAll(){
-      await Promise.all([
-        loadClientes(),
-        loadOfertas(),
-        loadTemplates(),
-        loadEnvios(),
-        loadHistorico()
-      ])
+      await Promise.all([loadClientes(), loadOfertas(), loadTemplates(), loadEnvios(), loadHistorico()])
     }
 
     async function initApp(){
       const { data:{ user } } = await supabase.auth.getUser()
       state.user = user
-
       $('loginView').classList.add('hidden')
       $('appView').classList.remove('hidden')
-
       await loadAll()
       renderAll()
     }
@@ -1156,25 +947,22 @@
     function renderClientes(){
       const termo = $('clienteBusca').value.toLowerCase().trim()
       const status = $('clienteFiltroStatus').value
-
       const rows = state.clientes.filter(c => {
         const okBusca = !termo || [c.nome,c.municipio,c.cultura,c.telefone].join(' ').toLowerCase().includes(termo)
         const okStatus = !status || c.status_contato === status
         return okBusca && okStatus
       })
-
       if(!rows.length){
         $('clientesTable').innerHTML = `<tr><td colspan="6"><div class="empty">Nenhum cliente encontrado.</div></td></tr>`
         return
       }
-
       $('clientesTable').innerHTML = rows.map(c => `
         <tr>
-          <td><strong>${escapeHtml(c.nome || '')}</strong><br><span class="small muted">${escapeHtml(c.fazenda || '')}</span></td>
-          <td>${escapeHtml(c.telefone || '—')}</td>
-          <td>${escapeHtml(c.municipio || '—')}</td>
-          <td>${escapeHtml(c.cultura || '—')}</td>
-          <td>${badgeStatusCliente(c.status_contato)}</td>
+          <td data-label="Nome"><strong>${escapeHtml(c.nome || '')}</strong><br><span class="small muted">${escapeHtml(c.fazenda || '')}</span></td>
+          <td data-label="Telefone">${escapeHtml(c.telefone || '—')}</td>
+          <td data-label="Município">${escapeHtml(c.municipio || '—')}</td>
+          <td data-label="Cultura">${escapeHtml(c.cultura || '—')}</td>
+          <td data-label="Status">${badgeStatusCliente(c.status_contato)}</td>
           <td>
             <div class="row-actions">
               <button class="btn btn-verde" onclick="abrirWhatsCliente('${c.id}')">Whats</button>
@@ -1191,16 +979,15 @@
         $('ofertasTable').innerHTML = `<tr><td colspan="6"><div class="empty">Nenhuma oferta cadastrada.</div></td></tr>`
         return
       }
-
       $('ofertasTable').innerHTML = state.ofertas.map(o => {
         const arq = state.arquivos.find(a => a.oferta_id === o.id)
         return `
           <tr>
-            <td><strong>${escapeHtml(o.produto || '')}</strong></td>
-            <td>${fmtMoney(o.preco)}</td>
-            <td>${fmtDate(o.validade)}</td>
-            <td>${escapeHtml(o.regiao_atendida || '—')}</td>
-            <td>${arq ? `<a href="${arq.url}" target="_blank">Abrir arquivo</a>` : '—'}</td>
+            <td data-label="Produto"><strong>${escapeHtml(o.produto || '')}</strong></td>
+            <td data-label="Preço">${fmtMoney(o.preco)}</td>
+            <td data-label="Validade">${fmtDate(o.validade)}</td>
+            <td data-label="Região">${escapeHtml(o.regiao_atendida || '—')}</td>
+            <td data-label="Arquivo">${arq ? `<a href="${arq.url}" target="_blank">Abrir arquivo</a>` : '—'}</td>
             <td>
               <div class="row-actions">
                 <button class="btn btn-azul" onclick="editOferta('${o.id}')">Editar</button>
@@ -1218,12 +1005,11 @@
         $('templatesTable').innerHTML = `<tr><td colspan="4"><div class="empty">Nenhum template cadastrado.</div></td></tr>`
         return
       }
-
       $('templatesTable').innerHTML = state.templates.map(t => `
         <tr>
-          <td><strong>${escapeHtml(t.titulo || '')}</strong></td>
-          <td>${escapeHtml(t.cultura || '—')}</td>
-          <td>${escapeHtml((t.corpo || '').slice(0,140))}${(t.corpo || '').length > 140 ? '...' : ''}</td>
+          <td data-label="Título"><strong>${escapeHtml(t.titulo || '')}</strong></td>
+          <td data-label="Cultura">${escapeHtml(t.cultura || '—')}</td>
+          <td data-label="Corpo">${escapeHtml((t.corpo || '').slice(0,140))}${(t.corpo || '').length > 140 ? '...' : ''}</td>
           <td>
             <div class="row-actions">
               <button class="btn btn-azul" onclick="editTemplate('${t.id}')">Editar</button>
@@ -1237,28 +1023,27 @@
     function renderEnvios(){
       const filtro = $('envioFiltroSituacao').value
       const rows = state.envios.filter(e => !filtro || e.situacao === filtro)
-
       if(!rows.length){
         $('enviosTable').innerHTML = `<tr><td colspan="6"><div class="empty">Nenhum envio preparado.</div></td></tr>`
         return
       }
-
       $('enviosTable').innerHTML = rows.map(e => {
         const cliente = state.clientes.find(c => c.id === e.cliente_id)
         const oferta = state.ofertas.find(o => o.id === e.oferta_id)
         const arq = state.arquivos.find(a => a.oferta_id === e.oferta_id)
-
+        const temFilaPendente = e.lote_id && state.envios.some(x => x.lote_id === e.lote_id && x.situacao !== 'enviado')
         return `
           <tr>
-            <td>${escapeHtml(cliente?.nome || '—')}</td>
-            <td>${escapeHtml(oferta?.produto || '—')}</td>
-            <td>${escapeHtml((e.mensagem_final || '').slice(0,120))}${(e.mensagem_final || '').length > 120 ? '...' : ''}</td>
-            <td>${arq ? `<a href="${arq.url}" target="_blank">Arquivo</a>` : (e.panfleto_anexado ? 'Anexado' : '—')}</td>
-            <td>${badgeStatusEnvio(e.situacao)}</td>
+            <td data-label="Cliente">${escapeHtml(cliente?.nome || '—')}</td>
+            <td data-label="Oferta">${escapeHtml(oferta?.produto || '—')}</td>
+            <td data-label="Mensagem">${escapeHtml((e.mensagem_final || '').slice(0,120))}${(e.mensagem_final || '').length > 120 ? '...' : ''}</td>
+            <td data-label="Panfleto">${arq ? `<a href="${arq.url}" target="_blank">Arquivo</a>` : (e.panfleto_anexado ? 'Anexado' : '—')}</td>
+            <td data-label="Situação">${badgeStatusEnvio(e.situacao)}</td>
             <td>
               <div class="row-actions">
-                <button class="btn btn-verde" onclick="enviarWhats('${e.id}')">Enviar</button>
-                <button class="btn btn-azul" onclick="editEnvio('${e.id}')">Editar</button>
+                ${temFilaPendente ? `<button class="btn btn-verde" onclick="openFila('${e.lote_id}')">Ver fila</button>` : ''}
+                <button class="btn btn-azul" onclick="enviarWhats('${e.id}')">Enviar</button>
+                <button class="btn btn-prata" onclick="editEnvio('${e.id}')">Editar</button>
                 <button class="btn btn-prata" onclick="marcarEnviado('${e.id}')">Marcar enviado</button>
                 <button class="btn btn-prata" onclick="deleteEnvio('${e.id}')">Excluir</button>
               </div>
@@ -1273,16 +1058,15 @@
         $('historicoTable').innerHTML = `<tr><td colspan="6"><div class="empty">Nenhum histórico registrado.</div></td></tr>`
         return
       }
-
       $('historicoTable').innerHTML = state.historico.map(h => {
         const cliente = state.clientes.find(c => c.id === h.cliente_id)
         return `
           <tr>
-            <td>${escapeHtml(cliente?.nome || '—')}</td>
-            <td>${fmtDateTime(h.data_contato)}</td>
-            <td>${escapeHtml((h.resposta_cliente || '').slice(0,120)) || '—'}</td>
-            <td>${h.venda_gerada ? '✅ Sim' : '—'}</td>
-            <td>${fmtDate(h.proximo_contato)}</td>
+            <td data-label="Cliente">${escapeHtml(cliente?.nome || '—')}</td>
+            <td data-label="Contato">${fmtDateTime(h.data_contato)}</td>
+            <td data-label="Resposta">${escapeHtml((h.resposta_cliente || '').slice(0,120)) || '—'}</td>
+            <td data-label="Venda">${h.venda_gerada ? '✅ Sim' : '—'}</td>
+            <td data-label="Próximo contato">${fmtDate(h.proximo_contato)}</td>
             <td>
               <div class="row-actions">
                 <button class="btn btn-azul" onclick="editHistorico('${h.id}')">Editar</button>
@@ -1301,7 +1085,6 @@
       renderTemplates()
       renderEnvios()
       renderHistorico()
-      fillEnvioSelects()
       fillHistoricoSelects()
     }
 
@@ -1317,16 +1100,16 @@
         area_plantada: $('clienteArea').value ? Number($('clienteArea').value) : null,
         produtos_interesse: $('clienteProdutos').value.trim(),
         status_contato: $('clienteStatus').value,
+        saudacao: $('clienteSaudacao').value.trim(),
+        encerramento: $('clienteEncerramento').value.trim(),
         observacoes: $('clienteObs').value.trim()
       }
-
       if(!payload.nome) return alert('Nome é obrigatório.')
       if(!payload.telefone) return alert('Telefone é obrigatório.')
 
       let res
       if(id) res = await supabase.from('clientes').update(payload).eq('id', id)
       else res = await supabase.from('clientes').insert(payload)
-
       if(res.error) return alert('Erro ao salvar cliente: ' + res.error.message)
 
       closeModal('clienteModal')
@@ -1346,6 +1129,8 @@
       $('clienteArea').value = c.area_plantada || ''
       $('clienteProdutos').value = c.produtos_interesse || ''
       $('clienteStatus').value = c.status_contato || 'ativo'
+      $('clienteSaudacao').value = c.saudacao || ''
+      $('clienteEncerramento').value = c.encerramento || ''
       $('clienteObs').value = c.observacoes || ''
       $('clienteModalTitle').textContent = 'Editar cliente'
       openModal('clienteModal')
@@ -1359,39 +1144,46 @@
       renderAll()
     }
 
+    function applyVars(text, cliente, oferta){
+      let t = text || ''
+      t = t.replaceAll('{nome}', cliente?.nome || '')
+      t = t.replaceAll('{produto}', oferta?.produto || '')
+      t = t.replaceAll('{validade}', oferta?.validade ? fmtDate(oferta.validade) : '')
+      t = t.replaceAll('{fazenda}', cliente?.fazenda || '')
+      t = t.replaceAll('{municipio}', cliente?.municipio || '')
+      t = t.replaceAll('{cultura}', cliente?.cultura || '')
+      return t
+    }
+
+    function montarMensagem(cliente, oferta, template){
+      const partes = [
+        applyVars(cliente?.saudacao, cliente, oferta),
+        applyVars(template?.corpo, cliente, oferta),
+        applyVars(cliente?.encerramento, cliente, oferta)
+      ].map(p => (p || '').trim()).filter(Boolean)
+      return partes.join('\n\n')
+    }
+
     window.abrirWhatsCliente = (id) => {
       const c = state.clientes.find(x => x.id === id)
       if(!c?.telefone) return alert('Cliente sem telefone.')
-      const msg = encodeURIComponent(`Bom dia, ${c.nome}.`)
-      window.open(`https://wa.me/${c.telefone}?text=${msg}`, '_blank')
+      const texto = c.saudacao ? applyVars(c.saudacao, c, null) : `Bom dia, ${c.nome}.`
+      window.open(`https://wa.me/${c.telefone}?text=${encodeURIComponent(texto)}`, '_blank')
     }
 
     // ---------- OFERTAS ----------
     async function uploadArquivoOferta(ofertaId){
       const file = $('ofertaArquivo').files[0]
       if(!file) return null
-
       const ext = file.name.split('.').pop()
       const fileName = `${ofertaId}/${Date.now()}.${ext}`
-
-      const { error:upErr } = await supabase.storage.from(BUCKET).upload(fileName, file, {
-        cacheControl: '3600',
-        upsert: true
-      })
+      const { error:upErr } = await supabase.storage.from(BUCKET).upload(fileName, file, { cacheControl:'3600', upsert:true })
       if(upErr) throw upErr
-
       const { data } = supabase.storage.from(BUCKET).getPublicUrl(fileName)
       const url = data.publicUrl
       const tipo = file.type.includes('pdf') ? 'pdf' : file.type.includes('image') ? 'imagem' : 'link'
-
-      const { error:dbErr } = await supabase.from('arquivos_oferta').insert({
-        oferta_id: ofertaId,
-        tipo,
-        url,
-        nome_arquivo: file.name
-      })
+      const { error:dbErr } = await supabase.from('arquivos_oferta').insert({ oferta_id: ofertaId, tipo, url, nome_arquivo: file.name })
       if(dbErr) throw dbErr
-
       return url
     }
 
@@ -1407,7 +1199,6 @@
         link_catalogo: $('ofertaLink').value.trim(),
         observacoes: $('ofertaObs').value.trim()
       }
-
       if(!payload.produto) return alert('Produto é obrigatório.')
 
       let ofertaId = id
@@ -1419,7 +1210,6 @@
         if(error) return alert('Erro ao criar oferta: ' + error.message)
         ofertaId = data.id
       }
-
       try{
         if($('ofertaArquivo').files[0]){
           await uploadArquivoOferta(ofertaId)
@@ -1428,7 +1218,6 @@
       }catch(err){
         alert('Oferta salva, mas houve erro no upload: ' + err.message)
       }
-
       closeModal('ofertaModal')
       await loadOfertas()
       renderAll()
@@ -1456,14 +1245,9 @@
       const o = state.ofertas.find(x => x.id === id)
       if(!o) return
       const payload = {
-        produto: `${o.produto} (cópia)`,
-        preco: o.preco,
-        condicao_pagamento: o.condicao_pagamento,
-        validade: o.validade,
-        quantidade_disponivel: o.quantidade_disponivel,
-        regiao_atendida: o.regiao_atendida,
-        link_catalogo: o.link_catalogo,
-        observacoes: o.observacoes
+        produto: `${o.produto} (cópia)`, preco: o.preco, condicao_pagamento: o.condicao_pagamento,
+        validade: o.validade, quantidade_disponivel: o.quantidade_disponivel,
+        regiao_atendida: o.regiao_atendida, link_catalogo: o.link_catalogo, observacoes: o.observacoes
       }
       const { error } = await supabase.from('ofertas').insert(payload)
       if(error) return alert('Erro ao duplicar: ' + error.message)
@@ -1492,14 +1276,12 @@
         cultura: $('templateCultura').value.trim(),
         corpo: $('templateCorpo').value.trim()
       }
-
       if(!payload.titulo) return alert('Título é obrigatório.')
       if(!payload.corpo) return alert('Corpo é obrigatório.')
 
       let res
       if(id) res = await supabase.from('templates').update(payload).eq('id', id)
       else res = await supabase.from('templates').insert(payload)
-
       if(res.error) return alert('Erro ao salvar template: ' + res.error.message)
 
       closeModal('templateModal')
@@ -1526,76 +1308,180 @@
       renderAll()
     }
 
-    // ---------- ENVIOS ----------
-    function fillEnvioSelects(){
-      $('envioCliente').innerHTML = `<option value="">Selecione</option>` + state.clientes.map(c => `<option value="${c.id}">${escapeHtml(c.nome)}</option>`).join('')
-      $('envioOferta').innerHTML = `<option value="">Selecione</option>` + state.ofertas.map(o => `<option value="${o.id}">${escapeHtml(o.produto)}</option>`).join('')
-      $('envioTemplate').innerHTML = `<option value="">Sem template</option>` + state.templates.map(t => `<option value="${t.id}">${escapeHtml(t.titulo)}</option>`).join('')
+    // ---------- LOTE (ENVIO EM MASSA) ----------
+    function fillLoteSelects(){
+      $('loteOferta').innerHTML = `<option value="">Selecione</option>` + state.ofertas.map(o => `<option value="${o.id}">${escapeHtml(o.produto)}</option>`).join('')
+      $('loteTemplate').innerHTML = `<option value="">Sem template</option>` + state.templates.map(t => `<option value="${t.id}">${escapeHtml(t.titulo)}</option>`).join('')
     }
 
-    window.gerarMensagemTemplate = () => {
-      const clienteId = $('envioCliente').value
-      const ofertaId = $('envioOferta').value
-      const templateId = $('envioTemplate').value
+    function loteClientesFiltrados(){
+      const termo = $('loteBusca').value.toLowerCase().trim()
+      const status = $('loteFiltroStatus').value
+      return state.clientes.filter(c => {
+        const okBusca = !termo || [c.nome,c.municipio,c.cultura,c.telefone].join(' ').toLowerCase().includes(termo)
+        const okStatus = !status || c.status_contato === status
+        return okBusca && okStatus
+      })
+    }
 
-      const cliente = state.clientes.find(c => c.id === clienteId)
+    function renderLoteClientesList(){
+      const rows = loteClientesFiltrados()
+      $('loteClientesList').innerHTML = rows.length ? rows.map(c => `
+        <label class="picker-row">
+          <input type="checkbox" ${loteSelectedIds.has(c.id) ? 'checked' : ''} onchange="toggleLoteCliente('${c.id}', this.checked)" />
+          <div>
+            <div class="picker-title">${escapeHtml(c.nome)}</div>
+            <div class="picker-sub small muted">${escapeHtml(c.telefone || '—')}${c.municipio ? ' · ' + escapeHtml(c.municipio) : ''}</div>
+          </div>
+        </label>
+      `).join('') : `<div class="empty">Nenhum cliente encontrado.</div>`
+      atualizaContagemLote()
+    }
+
+    function atualizaContagemLote(){
+      $('loteContagem').textContent = `${loteSelectedIds.size} selecionado${loteSelectedIds.size === 1 ? '' : 's'}`
+    }
+
+    window.toggleLoteCliente = (id, checked) => {
+      if(checked) loteSelectedIds.add(id); else loteSelectedIds.delete(id)
+      atualizaContagemLote()
+    }
+
+    window.loteSelecionarTodosFiltrados = () => {
+      loteClientesFiltrados().forEach(c => loteSelectedIds.add(c.id))
+      renderLoteClientesList()
+    }
+
+    window.loteLimparSelecao = () => { loteSelectedIds = new Set(); renderLoteClientesList() }
+
+    window.openLoteModal = () => {
+      loteSelectedIds = new Set()
+      $('loteBusca').value = ''
+      $('loteFiltroStatus').value = ''
+      fillLoteSelects()
+      renderLoteClientesList()
+      openModal('loteModal')
+    }
+
+    $('loteBusca').addEventListener('input', renderLoteClientesList)
+    $('loteFiltroStatus').addEventListener('change', renderLoteClientesList)
+
+    window.gerarEIniciarLote = async () => {
+      const ofertaId = $('loteOferta').value
+      const templateId = $('loteTemplate').value
+      if(!ofertaId) return alert('Selecione a oferta.')
+      if(!loteSelectedIds.size) return alert('Selecione ao menos um produtor.')
+
       const oferta = state.ofertas.find(o => o.id === ofertaId)
-      const template = state.templates.find(t => t.id === templateId)
+      const template = state.templates.find(t => t.id === templateId) || null
+      const arq = state.arquivos.find(a => a.oferta_id === ofertaId)
+      const loteId = gerarUUID()
 
-      if(!cliente) return alert('Selecione o cliente.')
-      if(!oferta) return alert('Selecione a oferta.')
-      if(!template) return alert('Selecione um template.')
+      const payloads = [...loteSelectedIds].map(cid => {
+        const cliente = state.clientes.find(c => c.id === cid)
+        return {
+          cliente_id: cid,
+          oferta_id: ofertaId,
+          mensagem_final: montarMensagem(cliente, oferta, template),
+          situacao: 'pronta',
+          panfleto_anexado: !!arq,
+          lote_id: loteId
+        }
+      })
 
-      let texto = template.corpo || ''
-      texto = texto.replaceAll('{nome}', cliente.nome || '')
-      texto = texto.replaceAll('{produto}', oferta.produto || '')
-      texto = texto.replaceAll('{validade}', oferta.validade ? fmtDate(oferta.validade) : '')
-      texto = texto.replaceAll('{fazenda}', cliente.fazenda || '')
-      texto = texto.replaceAll('{municipio}', cliente.municipio || '')
-      texto = texto.replaceAll('{cultura}', cliente.cultura || '')
+      const { error } = await supabase.from('envios').insert(payloads)
+      if(error) return alert('Erro ao gerar envios: ' + error.message)
 
-      $('envioMensagem').value = texto
+      closeModal('loteModal')
+      await loadEnvios()
+      renderAll()
+      openFila(loteId)
+    }
+
+    // ---------- FILA (MODO ENVIO) ----------
+    window.openFila = (loteId) => {
+      const itens = state.envios.filter(e => e.lote_id === loteId && e.situacao !== 'enviado')
+      if(!itens.length){ alert('Não há envios pendentes neste lote.'); return }
+      filaState = { loteId, itens, index: 0 }
+      renderFilaItem()
+      openModal('filaModal')
+    }
+
+    function renderFilaItem(){
+      const total = filaState.itens.length
+      if(filaState.index >= total){
+        $('filaCardInfo').innerHTML = ''
+        $('filaMensagem').value = ''
+        $('filaProgresso').textContent = `${total} de ${total}`
+        $('filaProgressBar').style.width = '100%'
+        $('filaConcluida').classList.remove('hidden')
+        return
+      }
+      $('filaConcluida').classList.add('hidden')
+      const item = filaState.itens[filaState.index]
+      const cliente = state.clientes.find(c => c.id === item.cliente_id)
+      const oferta = state.ofertas.find(o => o.id === item.oferta_id)
+      $('filaProgresso').textContent = `${filaState.index + 1} de ${total}`
+      $('filaProgressBar').style.width = Math.round((filaState.index / total) * 100) + '%'
+      $('filaCardInfo').innerHTML = `
+        <div class="fila-nome">${escapeHtml(cliente?.nome || '—')}</div>
+        <div class="small muted">${escapeHtml(cliente?.telefone || '—')} · ${escapeHtml(oferta?.produto || '—')}</div>
+      `
+      $('filaMensagem').value = item.mensagem_final || ''
+    }
+
+    window.filaAbrirWhats = () => {
+      const item = filaState.itens[filaState.index]
+      if(!item) return
+      const cliente = state.clientes.find(c => c.id === item.cliente_id)
+      if(!cliente?.telefone) return alert('Cliente sem telefone.')
+      window.open(`https://wa.me/${cliente.telefone}?text=${encodeURIComponent($('filaMensagem').value || '')}`, '_blank')
+    }
+
+    window.filaMarcarEnviado = async () => {
+      const item = filaState.itens[filaState.index]
+      if(!item) return
+      const { error } = await supabase.from('envios').update({
+        situacao: 'enviado',
+        mensagem_final: $('filaMensagem').value,
+        enviado_em: new Date().toISOString()
+      }).eq('id', item.id)
+      if(error) return alert('Erro ao marcar enviado: ' + error.message)
+      await loadEnvios()
+      renderAll()
+      filaState.index++
+      renderFilaItem()
+    }
+
+    window.filaPular = () => {
+      filaState.index++
+      renderFilaItem()
+    }
+
+    window.fecharFila = () => { closeModal('filaModal') }
+
+    // ---------- ENVIOS (edição individual) ----------
+    window.editEnvio = (id) => {
+      const e = state.envios.find(x => x.id === id)
+      if(!e) return
+      const cliente = state.clientes.find(c => c.id === e.cliente_id)
+      const oferta = state.ofertas.find(o => o.id === e.oferta_id)
+      $('envioId').value = e.id
+      $('envioInfo').textContent = `${cliente?.nome || 'Cliente removido'} · ${oferta?.produto || 'Oferta removida'}`
+      $('envioMensagem').value = e.mensagem_final || ''
+      $('envioSituacao').value = e.situacao || 'pendente'
+      openModal('envioModal')
     }
 
     window.saveEnvio = async () => {
       const id = $('envioId').value
-      const clienteId = $('envioCliente').value
-      const ofertaId = $('envioOferta').value
-      const ofertaArq = state.arquivos.find(a => a.oferta_id === ofertaId)
-
-      if(!clienteId) return alert('Selecione o cliente.')
-      if(!ofertaId) return alert('Selecione a oferta.')
-
-      const payload = {
-        cliente_id: clienteId,
-        oferta_id: ofertaId,
-        mensagem_final: $('envioMensagem').value.trim(),
-        situacao: $('envioSituacao').value,
-        panfleto_anexado: !!ofertaArq
-      }
-
-      let res
-      if(id) res = await supabase.from('envios').update(payload).eq('id', id)
-      else res = await supabase.from('envios').insert(payload)
-
-      if(res.error) return alert('Erro ao salvar envio: ' + res.error.message)
-
+      if(!id) return
+      const payload = { mensagem_final: $('envioMensagem').value.trim(), situacao: $('envioSituacao').value }
+      const { error } = await supabase.from('envios').update(payload).eq('id', id)
+      if(error) return alert('Erro ao salvar envio: ' + error.message)
       closeModal('envioModal')
       await loadEnvios()
       renderAll()
-    }
-
-    window.editEnvio = (id) => {
-      const e = state.envios.find(x => x.id === id)
-      if(!e) return
-      resetEnvioForm()
-      $('envioId').value = e.id
-      $('envioCliente').value = e.cliente_id || ''
-      $('envioOferta').value = e.oferta_id || ''
-      $('envioMensagem').value = e.mensagem_final || ''
-      $('envioSituacao').value = e.situacao || 'pendente'
-      $('envioModalTitle').textContent = 'Editar envio'
-      openModal('envioModal')
     }
 
     window.deleteEnvio = async (id) => {
@@ -1611,27 +1497,16 @@
       if(!e) return
       const cliente = state.clientes.find(c => c.id === e.cliente_id)
       if(!cliente?.telefone) return alert('Cliente sem telefone.')
-
       const texto = encodeURIComponent(e.mensagem_final || `Bom dia, ${cliente.nome}.`)
       window.open(`https://wa.me/${cliente.telefone}?text=${texto}`, '_blank')
-
       const arq = state.arquivos.find(a => a.oferta_id === e.oferta_id)
       if(arq && navigator.share){
-        try{
-          await navigator.share({
-            title: 'Panfleto',
-            text: 'Segue material da oferta',
-            url: arq.url
-          })
-        }catch(err){}
+        try{ await navigator.share({ title:'Panfleto', text:'Segue material da oferta', url: arq.url }) }catch(err){}
       }
     }
 
     window.marcarEnviado = async (id) => {
-      const { error } = await supabase.from('envios').update({
-        situacao: 'enviado',
-        enviado_em: new Date().toISOString()
-      }).eq('id', id)
+      const { error } = await supabase.from('envios').update({ situacao:'enviado', enviado_em: new Date().toISOString() }).eq('id', id)
       if(error) return alert('Erro ao marcar envio: ' + error.message)
       await loadEnvios()
       renderAll()
@@ -1647,7 +1522,6 @@
       const id = $('historicoId').value
       const cliente_id = $('historicoCliente').value
       if(!cliente_id) return alert('Selecione o cliente.')
-
       const payload = {
         cliente_id,
         oferta_id: $('historicoOferta').value || null,
@@ -1657,11 +1531,9 @@
         proximo_contato: $('historicoProximo').value || null,
         observacao: $('historicoObs').value.trim()
       }
-
       let res
       if(id) res = await supabase.from('historico').update(payload).eq('id', id)
       else res = await supabase.from('historico').insert(payload)
-
       if(res.error) return alert('Erro ao salvar histórico: ' + res.error.message)
 
       closeModal('historicoModal')
@@ -1707,7 +1579,7 @@
       if(current === 'clientes') return openClienteModal()
       if(current === 'ofertas') return openOfertaModal()
       if(current === 'templates') return openTemplateModal()
-      if(current === 'envios') return openEnvioModal()
+      if(current === 'envios') return openLoteModal()
       if(current === 'historico') return openHistoricoModal()
       openClienteModal()
     })
@@ -1715,9 +1587,7 @@
     // ---------- START ----------
     if(isKeyConfigured){
       const { data:{ session } } = await supabase.auth.getSession()
-      if(session){
-        await initApp()
-      }
+      if(session){ await initApp() }
     }
   </script>
 </body>
