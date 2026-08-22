@@ -530,9 +530,17 @@
         <button class="btn btn-prata" onclick="closeModal('loteModal')">Fechar</button>
       </div>
 
+      <p class="help-text">Serve pra qualquer mensagem em lote — oferta comercial, aviso, despedida, o que precisar. Oferta e template são opcionais.</p>
+
       <div class="form-grid">
-        <div><label>Oferta *</label><select id="loteOferta"></select></div>
-        <div><label>Template (corpo principal)</label><select id="loteTemplate"></select></div>
+        <div><label>Oferta (opcional)</label><select id="loteOferta"></select></div>
+        <div><label>Carregar de um template (opcional)</label><select id="loteTemplate"></select></div>
+      </div>
+
+      <div style="margin-top:12px">
+        <label>Mensagem <span style="text-transform:none; font-weight:500">(escreva livremente ou ajuste o texto carregado do template)</span></label>
+        <textarea id="loteCorpo" rows="6" placeholder="Escreva aqui a mensagem, do jeito que quiser. Ex.: aviso, despedida, convite, oferta..."></textarea>
+        <div class="help-text">Variáveis opcionais: {nome}, {produto}, {validade}, {fazenda}, {municipio}, {cultura}. A saudação e o encerramento salvos no cadastro de cada cliente são adicionados automaticamente antes e depois deste texto.</div>
       </div>
 
       <div style="margin-top:18px">
@@ -1155,10 +1163,10 @@
       return t
     }
 
-    function montarMensagem(cliente, oferta, template){
+    function montarMensagem(cliente, oferta, corpoTexto){
       const partes = [
         applyVars(cliente?.saudacao, cliente, oferta),
-        applyVars(template?.corpo, cliente, oferta),
+        applyVars(corpoTexto, cliente, oferta),
         applyVars(cliente?.encerramento, cliente, oferta)
       ].map(p => (p || '').trim()).filter(Boolean)
       return partes.join('\n\n')
@@ -1358,6 +1366,7 @@
       loteSelectedIds = new Set()
       $('loteBusca').value = ''
       $('loteFiltroStatus').value = ''
+      $('loteCorpo').value = ''
       fillLoteSelects()
       renderLoteClientesList()
       openModal('loteModal')
@@ -1366,15 +1375,20 @@
     $('loteBusca').addEventListener('input', renderLoteClientesList)
     $('loteFiltroStatus').addEventListener('change', renderLoteClientesList)
 
-    window.gerarEIniciarLote = async () => {
-      const ofertaId = $('loteOferta').value
+    $('loteTemplate').addEventListener('change', () => {
       const templateId = $('loteTemplate').value
-      if(!ofertaId) return alert('Selecione a oferta.')
-      if(!loteSelectedIds.size) return alert('Selecione ao menos um produtor.')
+      const template = state.templates.find(t => t.id === templateId)
+      $('loteCorpo').value = template ? (template.corpo || '') : ''
+    })
 
-      const oferta = state.ofertas.find(o => o.id === ofertaId)
-      const template = state.templates.find(t => t.id === templateId) || null
-      const arq = state.arquivos.find(a => a.oferta_id === ofertaId)
+    window.gerarEIniciarLote = async () => {
+      const ofertaId = $('loteOferta').value || null
+      const corpoTexto = $('loteCorpo').value.trim()
+      if(!loteSelectedIds.size) return alert('Selecione ao menos um produtor.')
+      if(!corpoTexto) return alert('Escreva a mensagem (ou carregue um template).')
+
+      const oferta = ofertaId ? state.ofertas.find(o => o.id === ofertaId) : null
+      const arq = ofertaId ? state.arquivos.find(a => a.oferta_id === ofertaId) : null
       const loteId = gerarUUID()
 
       const payloads = [...loteSelectedIds].map(cid => {
@@ -1382,7 +1396,7 @@
         return {
           cliente_id: cid,
           oferta_id: ofertaId,
-          mensagem_final: montarMensagem(cliente, oferta, template),
+          mensagem_final: montarMensagem(cliente, oferta, corpoTexto),
           situacao: 'pronta',
           panfleto_anexado: !!arq,
           lote_id: loteId
